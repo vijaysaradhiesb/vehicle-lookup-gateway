@@ -38,13 +38,13 @@
                 </setBody>
             </filter>
 
-            <log loggingLevel="TRACE" message="Vehicle Details Lookup Request from ICE :: ${body}"/>
+            <log loggingLevel="TRACE" message="Vehicle Details Lookup Request from INTEG :: ${body}"/>
             <convertBodyTo type="com.integ.integration.services.vehicle.api.VehicleLookupRequest"/>
             <to uri="validator:com/integ/integration/services/vehicle/api/vehicle-lookup.xsd"/>
             <removeHeaders pattern="*"/>
             <to uri="{{vehicle.details.lookup.provider}}"/>
             <removeHeaders pattern="*"/>
-            <log loggingLevel="TRACE" message="Vehicle Details Lookup Response to ICE :: ${body}"/>
+            <log loggingLevel="TRACE" message="Vehicle Details Lookup Response to INTEG :: ${body}"/>
             <to uri="validator:/com/integ/integration/services/vehicle/api/vehicle-lookup.xsd"/>
 
             <convertBodyTo type="com.integ.integration.services.vehicle.api.AbstractVehicleLookupResponse"/>

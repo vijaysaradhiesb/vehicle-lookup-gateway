@@ -115,7 +115,7 @@ public abstract class AbstractVehicleLookupGatewayRouteTest extends TestSupport 
                         .convertBodyTo(String.class)
                         .to("mock:jsonRawResult");
 
-                from("direct-vm:vehicle.details.lookup.ERS").process(exchange -> exchange.getIn().setBody(VEHICLE_LOOKUP_RESPONSE)).unmarshal(vehicleLookupDataFormat);
+                from("direct-vm:vehicle.details.lookup.INTEG").process(exchange -> exchange.getIn().setBody(VEHICLE_LOOKUP_RESPONSE)).unmarshal(vehicleLookupDataFormat);
             }
         });
     }
