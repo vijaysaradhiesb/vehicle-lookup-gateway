@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<features name="${feature.name}-${project.version}">
+
+    <!--
+        Usage:
+        feature:repo-add mvn:${project.groupId}/${project.artifactId}/${project.version}/xml/features
+     -->
+
+    <repository>
+        mvn:com.integ.integration.service/external-systems-mappings-mock/${external-systems-mappings-service.version}/xml/features
+    </repository>
+    <repository>
+        mvn:com.integ.integration.service/external-systems-mappings-service/${external-systems-mappings-service.version}/xml/features
+    </repository>
+
+    <repository>
+        mvn:com.integ.integration.service.authentication/authentication-service/${authentication.version}/xml/features
+    </repository>
+
+    <feature name="${feature.name}-deps" version="${project.version}">
+        <feature>camel-jaxb</feature>
+        <feature>camel-cxf</feature>
+        <feature>camel-spring</feature>
+        <feature>camel-swagger-java</feature>
+        <feature>camel-groovy</feature>
+
+        <bundle>mvn:org.jvnet.jaxb2_commons/jaxb2-basics-runtime/${jaxb2-basics.version}</bundle>
+        <bundle>mvn:com.integ.integration.contract/contracts-common/${contracts-common.version}</bundle>
+        <bundle>mvn:com.integ.integration.contract/vehicle-lookup-contract/${vehicle-lookup-contract.version}</bundle>
+    </feature>
+
+    <feature name="${feature.name}" version="${project.version}">
+        <feature version="${project.version}">${feature.name}-deps</feature>
+        <feature version="${external-systems-mappings-service.version}">integ-externalSystemsMappings</feature>
+        <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+    </feature>
+
+    <feature name="${feature.name}-secured-no-mapping" version="${project.version}">
+        <feature version="${project.version}">${feature.name}-deps</feature>
+        <feature version="${external-systems-mappings-service.version}">integ-externalSystemsMappings-Mock</feature>
+        <feature version="${authentication.version}">integ-authentication</feature>
+        <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}</bundle>
+    </feature>
+
+    <feature name="${feature.name}-docker-connectivity" version="${project.version}">
+        <feature version="${connectivity-hazelcast.version}">integ-connectivityXAHazelCast-hazelcast1</feature>
+    </feature>
+
+</features>

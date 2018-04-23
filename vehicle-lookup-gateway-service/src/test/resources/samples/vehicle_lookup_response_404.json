@@ -1,0 +1,11 @@
+{
+  "faultDetails": {
+    "message": {
+      "value": "MESSAGE TEXT",
+      "lang": "EN"
+    },
+    "hint": [
+      "VRM_ABC"
+    ]
+  }
+}

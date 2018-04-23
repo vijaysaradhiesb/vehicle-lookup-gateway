@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util" xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xmlns:core="http://cxf.apache.org/core"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                        http://www.springframework.org/schema/beans/spring-beans.xsd
+                        http://www.springframework.org/schema/context
+                        http://www.springframework.org/schema/context/spring-context.xsd
+                        http://www.springframework.org/schema/util
+                        http://www.springframework.org/schema/util/spring-util.xsd http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd">
+
+    <context:annotation-config/>
+
+    <util:properties id="props" location="test-config.properties"/>
+
+    <bean id="properties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="properties" ref="props"/>
+    </bean>
+
+    <bean id="tokenValidationInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>
+
+    <bean id="vehicleLookupDataFormat" class="org.apache.camel.converter.jaxb.JaxbDataFormat">
+        <constructor-arg>
+            <bean id="vehicleLookupResponseJaxbContext" class="javax.xml.bind.JAXBContext" factory-method="newInstance">
+                <constructor-arg ref="vehicleLookupClasses"/>
+            </bean>
+        </constructor-arg>
+    </bean>
+
+    <!-- SECURED service -->
+    <cxf:rsClient id="testClient" address="${vehicle.details.lookup.esb.gateway.address}"
+                  serviceClass="com.integ.integration.services.vehicle.api.VehicleDetailsLookupService" bus="vehicleLookupGatewayCxfBus">
+        <cxf:providers>
+            <ref bean="jacksonJaxbJsonProvider"/>
+            <bean id="jaxbElementProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider"> <!-- Even if Jackson is capable of handling both: jaxb and json, then from 3.1.2 CXF default JAXBElementProvider kicks in due to Jackson Provider using */* and default Providers exclusions are only for JSON format -->
+                <property name="singleJaxbContext" value="true"/>
+                <property name="extraClass" ref="vehicleLookupClasses"/>
+            </bean>
+        </cxf:providers>
+        <cxf:features>
+            <core:logging/>
+            <bean class="org.apache.cxf.transport.common.gzip.GZIPFeature"/>
+        </cxf:features>
+    </cxf:rsClient>
+</beans>
+
+

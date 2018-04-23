@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:VehicleLookupResponse xmlns:ns2="http://integ.com/integration/services/vehicle/api">
+    <vehicleInfo>
+        <ABICode>17539302</ABICode>
+        <BodyType code="96" desc="COUPE"/>
+        <CubicCapacity>1753</CubicCapacity>
+        <FuelType code="2" desc="Petrol"/>
+        <Make code="96" desc="FORD"/>
+        <Model code="128" desc="FOCUS ZETEC TDCI (115)"/>
+        <Year>2010</Year>
+        <NumberOfDoors>4</NumberOfDoors>
+        <RegistrationDate>2016-01-01Z</RegistrationDate>
+        <NumberOfSeats>5</NumberOfSeats>
+        <RegistrationNumber>BX10BVH</RegistrationNumber>
+        <Transmission code="M" desc="Manual"/>
+        <Value>123.45</Value>
+        <VehicleLeftRightDrive code="01" desc="description"/>
+        <GrossWeight>str1234</GrossWeight>
+        <VehicleIdentificationNumber>VF7XCRHKH9Z022451</VehicleIdentificationNumber>
+        <PowerWeightRatio>str1234</PowerWeightRatio>
+        <VehicleType code="M" desc="description"/>
+        <EngineType code="2000" desc="desc"/>
+        <Color code="M" desc="SILVER"/>
+        <InsuranceGroup code="7"/>
+        <Mileage>0</Mileage>
+        <EngineSize>1997</EngineSize>
+    </vehicleInfo>
+</ns2:VehicleLookupResponse>

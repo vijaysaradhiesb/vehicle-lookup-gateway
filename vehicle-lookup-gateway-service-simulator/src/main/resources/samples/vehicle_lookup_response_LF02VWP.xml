@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:VehicleLookupResponse xmlns:ns2="http://integ.com/integration/services/vehicle/api">
+    <vehicleInfo>
+        <ABICode>17539302</ABICode>
+        <BodyType code="96" desc="standard"/>
+        <CubicCapacity>1196</CubicCapacity>
+        <FuelType code="2" desc="Diesel"/>
+        <Make code="LM" desc="VAUXHALL"/>
+        <Model code="128" desc="ASTRA E"/>
+        <Year>2010</Year>
+        <NumberOfDoors>3</NumberOfDoors>
+        <RegistrationDate>2016-01-01Z</RegistrationDate>
+        <NumberOfSeats>5</NumberOfSeats>
+        <RegistrationNumber>LF02VWP</RegistrationNumber>
+        <Transmission code="M" desc="Manual"/>
+        <Value>123.45</Value>
+        <VehicleLeftRightDrive code="0" desc="str1234"/>
+        <GrossWeight>1234</GrossWeight>
+        <VehicleIdentificationNumber>VF7XCRHKH9Z022451</VehicleIdentificationNumber>
+        <PowerWeightRatio>1</PowerWeightRatio>
+        <VehicleType code="0" desc="str1234"/>
+        <EngineType code="125_CC" desc="str1234"/>
+        <Color code="M" desc="Silver"/>
+        <InsuranceGroup code="7"/>
+        <Mileage>0</Mileage>
+        <EngineSize>1997</EngineSize>
+    </vehicleInfo>
+</ns2:VehicleLookupResponse>

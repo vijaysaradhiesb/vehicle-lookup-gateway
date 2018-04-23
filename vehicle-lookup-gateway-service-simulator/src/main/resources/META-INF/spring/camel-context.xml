@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://camel.apache.org/schema/spring
+            http://camel.apache.org/schema/spring/camel-spring.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+            http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <context:annotation-config/>
+
+    <bean id="vehicleDataLoader" class="com.integ.vehiclelookup.gateway.simulator.VehicleDataLoader"/>
+    <camelContext id="vehicle-lookup-provider-simulator-context"
+                  useMDCLogging="true"
+                  trace="${camel.trace.simulator.enabled:false}"
+                  xmlns="http://camel.apache.org/schema/spring">
+
+        <propertyPlaceholder id="camelProps" location="ref:props"/>
+
+        <route id="vehicle.details.lookup.esb.simulator">
+
+            <from uri="{{vehicle.lookup.endpoint}}"/>
+            <setExchangePattern pattern="InOut"/>
+            <convertBodyTo type="com.integ.integration.services.vehicle.api.VehicleLookupRequest"/>
+            <log loggingLevel="DEBUG" message="Simulator incoming body: ${body}"/>
+            <choice>
+                <when>
+                    <simple>${body?.vrm} == 'VLFAIL'</simple>
+                    <bean ref="vehicleDataLoader" method="generateNotFound(${body?.vrm})"/>
+                </when>
+                <when>
+                    <simple>${body?.vrm} == 'VRMNOTF'</simple>
+                    <bean ref="vehicleDataLoader" method="generateNotFound(${body?.vrm})"/>
+                </when>
+                <when>
+                    <simple>${body?.vrm} == 'VRMINVA'</simple>
+                    <bean ref="vehicleDataLoader" method="generateVrmWrong(${body?.vrm})"/>
+                </when>
+                <otherwise>
+                    <bean ref="vehicleDataLoader" method="loadSampleVehicleDetails(${body?.vrm})"/>
+                    <log loggingLevel="DEBUG" message="Vehicle Lookup Simulator Reply: ${body}"/>
+                    <convertBodyTo type="com.integ.integration.services.vehicle.api.VehicleLookupResponse"/>
+                </otherwise>
+            </choice>
+        </route>
+
+    </camelContext>
+
+</beans>

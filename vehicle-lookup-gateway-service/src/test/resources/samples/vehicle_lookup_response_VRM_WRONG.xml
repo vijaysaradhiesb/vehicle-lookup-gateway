@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:VRMInvalidFailure xmlns:ns2="http://integ.com/integration/services/vehicle/api">
+    <faultDetails>
+        <message lang="EN">MESSAGE TEXT</message>
+        <hint>VRM_ABC</hint>
+    </faultDetails>
+</ns2:VRMInvalidFailure>

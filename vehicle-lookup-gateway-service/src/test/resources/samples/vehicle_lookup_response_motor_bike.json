@@ -1,0 +1,67 @@
+{
+  "vehicleInfo": {
+    "ABICode": "90310602",
+    "BodyType": {
+      "code": "96",
+      "lang": "EN",
+      "desc": "standard"
+    },
+    "CubicCapacity": 123,
+    "FuelType": {
+      "code": "2",
+      "lang": "EN",
+      "desc": "Petrol"
+    },
+    "Make": {
+      "code": "LM",
+      "lang": "EN",
+      "desc": "HONDA"
+    },
+    "Model": {
+      "code": "128",
+      "lang": "EN",
+      "desc": "HONDA 12"
+    },
+    "Year": 2010,
+    "NumberOfDoors": "0",
+    "RegistrationDate": "2016-01-01",
+    "NumberOfSeats": "0",
+    "RegistrationNumber": "LF02VWP",
+    "Transmission": {
+      "code": "M",
+      "lang": "EN",
+      "desc": "Manual"
+    },
+    "Value": 123.45,
+    "VehicleLeftRightDrive": {
+      "code": "0",
+      "lang": "EN",
+      "desc": "str1234"
+    },
+    "GrossWeight": "str1234",
+    "VehicleIdentificationNumber": "VF7XCRHKH9Z022451",
+    "PowerWeightRatio": "str1234",
+    "VehicleType": {
+      "code": "0",
+      "lang": "EN",
+      "desc": "str1234"
+    },
+    "EngineType": {
+      "code": "0",
+      "lang": "EN",
+      "desc": "str1234"
+    },
+    "Color": {
+      "code": "M",
+      "lang": "EN",
+      "desc": "Silver"
+    },
+    "InsuranceGroup": {
+      "code": "7",
+      "lang": "EN",
+      "desc": null
+    },
+    "Mileage": "0",
+    "EngineSize": "1997"
+  }
+}

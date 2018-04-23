@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xmlns:core="http://cxf.apache.org/core"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://camel.apache.org/schema/cxf
+            http://camel.apache.org/schema/cxf/camel-cxf.xsd
+            http://cxf.apache.org/core
+            http://cxf.apache.org/schemas/core.xsd
+            http://www.springframework.org/schema/util
+            http://www.springframework.org/schema/util/spring-util.xsd">
+
+
+    <!-- CXF Beans -->
+    <util:list id="vehicleLookupClasses">
+        <value>com.integ.integration.services.vehicle.api.VehicleLookupRequest</value>
+        <value>com.integ.integration.services.vehicle.api.VehicleLookupResponse</value>
+        <value>com.integ.integration.services.vehicle.api.VRMInvalidFailure</value>
+        <value>com.integ.integration.services.vehicle.api.VehicleNotFoundFailure</value>
+    </util:list>
+
+    <bean id="jacksonJaxbJsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider">
+        <constructor-arg ref="objectMapper"/>
+        <constructor-arg value="#{ T(com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider).DEFAULT_ANNOTATIONS }"/>
+    </bean>
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="objectMapper"/>
+        <property name="targetMethod" value="setSerializationInclusion"/>
+        <property name="arguments" value="#{ T(com.fasterxml.jackson.annotation.JsonInclude.Include).NON_EMPTY }"/>
+    </bean>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="jacksonJaxbJsonProvider"/>
+        <property name="targetMethod" value="configure"/>
+        <property name="arguments">
+            <list>
+                <value type="com.fasterxml.jackson.databind.SerializationFeature">WRITE_DATES_AS_TIMESTAMPS</value>
+                <value>false</value>
+            </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="jacksonJaxbJsonProvider"/>
+        <property name="targetMethod" value="configure"/>
+        <property name="arguments">
+            <list>
+                <value type="com.fasterxml.jackson.core.JsonGenerator.Feature">WRITE_BIGDECIMAL_AS_PLAIN</value>
+                <value>true</value>
+            </list>
+        </property>
+    </bean>
+    <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+        <property name="targetObject" ref="jacksonJaxbJsonProvider"/>
+        <property name="targetMethod" value="configure"/>
+        <property name="arguments">
+            <list>
+                <value type="com.fasterxml.jackson.core.JsonGenerator.Feature">WRITE_NUMBERS_AS_STRINGS</value>
+                <value>true</value>
+            </list>
+        </property>
+    </bean>
+
+    <core:bus bus="vehicleLookupGatewayCxfBus">
+        <core:properties>
+            <entry key="skip.default.json.provider.registration" value="true"/>
+        </core:properties>
+    </core:bus>
+
+
+    <!-- SECURED service -->
+    <cxf:rsServer id="vlExternalUiSecuredEndpoint" address="${vehicle.details.lookup.esb.gateway.address}"
+                  serviceClass="com.integ.integration.services.vehicle.api.VehicleDetailsLookupService"
+                  bus="vehicleLookupGatewayCxfBus">
+        <cxf:providers>
+            <ref bean="jacksonJaxbJsonProvider"/>
+            <bean id="jaxbElementProvider"
+                  class="org.apache.cxf.jaxrs.provider.JAXBElementProvider"> <!-- Even if Jackson is capable of handling both: jaxb and json, then from 3.1.2 CXF default JAXBElementProvider kicks in due to Jackson Provider using */* and default Providers exclusions are only for JSON format -->
+                <property name="singleJaxbContext" value="true"/>
+                <property name="extraClass" ref="vehicleLookupClasses"/>
+            </bean>
+            <bean id="schemaValidationExceptionMapperProvider"
+                  class="com.integ.integration.services.contracts.common.providers.SchemaValidationExceptionMapperProvider"/>
+        </cxf:providers>
+        <cxf:features>
+            <core:logging/>
+            <bean class="org.apache.cxf.transport.common.gzip.GZIPFeature"/>
+        </cxf:features>
+        <cxf:inInterceptors>
+            <ref bean="tokenValidationInterceptor"/>
+        </cxf:inInterceptors>
+        <cxf:outInterceptors>
+            <bean class="com.integ.integration.services.contracts.common.rest.ResponseCodeSettingInterceptor"/>
+        </cxf:outInterceptors>
+    </cxf:rsServer>
+    <!-- UNSECURED SERVICE -->
+    <cxf:rsServer id="vlInternalUnsecuredEndpoint" address="${vehicle.details.lookup.esb.gateway.address}"
+                  serviceClass="com.integ.integration.services.vehicle.api.VehicleDetailsLookupService"
+                  bus="vehicleLookupGatewayCxfBus">
+        <cxf:providers>
+            <bean id="jacksonJaxbJsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider"/>
+            <bean id="jaxbElementProvider"
+                  class="org.apache.cxf.jaxrs.provider.JAXBElementProvider"> <!-- Even if Jackson is capable of handling both: jaxb and json, then from 3.1.2 CXF default JAXBElementProvider kicks in due to Jackson Provider using */* and default Providers exclusions are only for JSON format -->
+                <property name="singleJaxbContext" value="true"/>
+                <property name="extraClass" ref="vehicleLookupClasses"/>
+            </bean>
+        </cxf:providers>
+    </cxf:rsServer>
+
+</beans>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:VehicleLookupResponse xmlns:ns2="http://integ.com/integration/services/vehicle/api">
+    <vehicleInfo>
+        <ABICode>90310602</ABICode>
+        <BodyType code="96" desc="COUPE" lang="EN"/>
+        <CubicCapacity>123</CubicCapacity>
+        <FuelType code="2" desc="Deisel" lang="EN"/>
+        <Make code="96" desc="AUDI" lang="EN"/>
+        <Model code="128" desc="AUDI 123" lang="EN"/>
+        <Year>2010</Year>
+        <NumberOfDoors>0</NumberOfDoors>
+        <NumberOfSeats>0</NumberOfSeats>
+        <RegistrationNumber>BX10BVH</RegistrationNumber>
+        <Transmission code="M" desc="Manual" lang="EN"/>
+        <Value>123.45</Value>
+        <VehicleLeftRightDrive code="01" desc="description" lang="EN"/>
+        <GrossWeight>str1234</GrossWeight>
+        <VehicleIdentificationNumber>VF7XCRHKH9Z022451</VehicleIdentificationNumber>
+        <PowerWeightRatio>str1234</PowerWeightRatio>
+        <VehicleType code="M" desc="description" lang="EN"/>
+        <EngineType code="01" desc="desc" lang="EN"/>
+        <Color code="M" desc="SILVER" lang="EN"/>
+        <InsuranceGroup code="7"/>
+        <Mileage>0</Mileage>
+        <EngineSize>1997</EngineSize>
+    </vehicleInfo>
+</ns2:VehicleLookupResponse>

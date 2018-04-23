@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://camel.apache.org/schema/spring
+            http://camel.apache.org/schema/spring/camel-spring.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd">
+    <context:annotation-config/>
+
+    <bean id="unmappedResponseType" class="java.lang.IllegalArgumentException">
+        <constructor-arg value="Response type does not map to any HTTP code"/>
+    </bean>
+
+    <camelContext id="vehicle-details-lookup-esb-gateway-camel-context" trace="${camel.trace.enabled:false}"
+                  useMDCLogging="true" streamCache="true" xmlns="http://camel.apache.org/schema/spring">
+
+        <propertyPlaceholder id="camelProps" location="ref:props"/>
+
+        <streamCaching id="vehicleLookupGatewayStreamCaching" bufferSize="16384"
+                       spoolDirectory="./data/vehicleLookupGateway" spoolThreshold="256000"/>
+
+        <route id="vehicle.details.lookup.esb.gateway">
+            <from uri="cxfrs:bean:{{vehicle.details.lookup.cxfrs.bean}}?bindingStyle=SimpleConsumer"/>
+            <from uri="direct-vm:vehicle.lookup.gateway"/>
+            <setExchangePattern pattern="InOut"/>
+
+            <filter>
+                <simple>${header.vrm} != null</simple>
+                <setBody>
+                    <spel>#{
+                        new com.integ.integration.services.vehicle.api.VehicleLookupRequest().withVrm(request.headers['vrm'])
+                    }
+                    </spel>
+                </setBody>
+            </filter>
+
+            <log loggingLevel="TRACE" message="Vehicle Details Lookup Request from ICE :: ${body}"/>
+            <convertBodyTo type="com.integ.integration.services.vehicle.api.VehicleLookupRequest"/>
+            <to uri="validator:com/integ/integration/services/vehicle/api/vehicle-lookup.xsd"/>
+            <removeHeaders pattern="*"/>
+            <to uri="{{vehicle.details.lookup.provider}}"/>
+            <removeHeaders pattern="*"/>
+            <log loggingLevel="TRACE" message="Vehicle Details Lookup Response to ICE :: ${body}"/>
+            <to uri="validator:/com/integ/integration/services/vehicle/api/vehicle-lookup.xsd"/>
+
+            <convertBodyTo type="com.integ.integration.services.vehicle.api.AbstractVehicleLookupResponse"/>
+        </route>
+    </camelContext>
+
+
+</beans>

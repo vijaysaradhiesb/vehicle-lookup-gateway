@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:VehicleLookupResponse xmlns:ns2="http://integ.com/integration/services/vehicle/api">
+    <vehicleInfo>
+        <ABICode>90310602</ABICode>
+        <BodyType code="96" desc="standard" lang="EN"/>
+        <CubicCapacity>123</CubicCapacity>
+        <FuelType code="2" desc="Petrol" lang="EN"/>
+        <Make code="LM" desc="HONDA" lang="EN"/>
+        <Model code="128" desc="HONDA 12" lang="EN"/>
+        <Year>2010</Year>
+        <NumberOfDoors>0</NumberOfDoors>
+        <RegistrationDate>2016-01-01Z</RegistrationDate>
+        <NumberOfSeats>0</NumberOfSeats>
+        <RegistrationNumber>LF02VWP</RegistrationNumber>
+        <Transmission code="M" desc="Manual" lang="EN"/>
+        <Value>123.45</Value>
+        <VehicleLeftRightDrive code="0" desc="str1234" lang="EN"/>
+        <GrossWeight>str1234</GrossWeight>
+        <VehicleIdentificationNumber>VF7XCRHKH9Z022451</VehicleIdentificationNumber>
+        <PowerWeightRatio>str1234</PowerWeightRatio>
+        <VehicleType code="0" desc="str1234" lang="EN"/>
+        <EngineType code="0" desc="str1234" lang="EN"/>
+        <Color code="M" desc="Silver" lang="EN"/>
+        <InsuranceGroup code="7"/>
+        <Mileage>0</Mileage>
+        <EngineSize>1997</EngineSize>
+    </vehicleInfo>
+</ns2:VehicleLookupResponse>
